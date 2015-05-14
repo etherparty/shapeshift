@@ -1,0 +1,17 @@
+<div class="form" ng-controller="MainController">
+  <h1>Buy Ether with BTC</h1>
+  <form ng-submit="submit()">
+    <div class="field-wrap">
+      <input autocomplete="off" placeholder="Ether Address" required="" type="text" ng-model="address">
+    </div>
+
+    <div class="field-wrap">
+      <input ng-model="etherAmount" ng-change="calculateBTCAmount()" autocomplete="off" id="ether" placeholder="Ether Amount" required="" type="number">
+    </div>
+
+    <div class="field-wrap">
+      <input autocomplete="off" disabled id="btcamount" type="number" ng-model="btcAmount">
+    </div>
+    <button class="button button-block" type="submit">Get Started</button>
+  </form>
+</div>

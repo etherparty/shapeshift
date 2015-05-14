@@ -14,6 +14,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 app.use('/', routes);
 
 var port = process.env.PORT || 3000;
