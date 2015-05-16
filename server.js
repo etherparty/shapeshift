@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var routes = require('./server/routes');
 var app = express();
 
+app.enable('trust proxy');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.locals.layout = 'layout.hbs';
@@ -14,7 +15,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+app.use('/', routes.router);
+app.use('/api/v1', routes.apiRouter);
 
 var port = process.env.PORT || 3000;
 

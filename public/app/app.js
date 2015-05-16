@@ -16,4 +16,9 @@ angular.module('ethershift', [
         url: '/',
         templateUrl: 'app/components/templates/home.html'
       });
+  })
+  .constant('API_URL', '/api/v1');
+
+  window.BigNumber.config({
+    DECIMAL_PLACES: 8
   });

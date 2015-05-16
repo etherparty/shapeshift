@@ -8,12 +8,19 @@
     </div>
 
     <div class="field-wrap">
-      <input ng-model="etherAmount" ng-change="calculateBTCAmount()" autocomplete="off" id="ether" placeholder="Ether Amount" required="" type="number">
+      <div class="input-group">
+        <input ng-model="etherAmount" ng-change="calculateBTCAmount()" autocomplete="off" id="ether" placeholder="Ether Amount" required="" type="number">
+        <span class="input-group-addon">Ether</span>
+      </div>
     </div>
 
     <div class="field-wrap">
-      <input autocomplete="off" disabled id="btcamount" type="number" ng-model="btcAmount">
+      <div class="input-group">
+        <input autocomplete="off" disabled id="btcamount" type="number" ng-model="btcAmount">
+        <span class="input-group-addon">BTC</span>
+      </div>
     </div>
+
     <button class="button button-block" type="submit">Get Started</button>
   </form>
 </div>

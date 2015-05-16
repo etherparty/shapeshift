@@ -15,6 +15,9 @@ var lib = {
     var url = 'https://blockchain.info/merchant/' + blockchainID + '/new_address?password=' + blockchainPassword1 + '&second_password=' + blockchainPassword2 + '&label=' + label;
 
     return axios.post(url);
+  },
+  getRate: function () {
+    return 100; // 1 BTC = 100 Ether
   }
 };
 

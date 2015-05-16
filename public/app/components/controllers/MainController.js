@@ -1,27 +1,27 @@
 angular.module('ethershift')
-  .controller('MainController', function ($scope, $http, $modal) {
+  .controller('MainController', function ($scope, $http, $modal, API_URL) {
     $scope.address = '';
-    $scope.etherAmount = null;
+    $scope.etherAmount = 100;
     $scope.btcAmount = null;
 
     $scope.calculateBTCAmount = function () {
       var amount = Number($scope.etherAmount);
 
-      BigNumber.config({
-        DECIMAL_PLACES: 8
+      $http({
+        url: API_URL + '/rate'
+      })
+      .success(function (response) {
+        $scope.btcAmount = new BigNumber(amount)
+          .dividedBy(response.rate)
+          .toNumber();
       });
-
-      $scope.btcAmount = new BigNumber(amount)
-        .dividedBy(25)
-        .dividedBy(1.025)
-        .toNumber();
-    }
+    };
 
     $scope.submit = function () {
       $http({
-          url: '/createOrder',
+          url: API_URL + '/createOrder',
           params: {
-            amount: $scope.btcAmount // TODO: refactor to etherAmount and calculate on serverside
+            withdrawalAddress: $scope.address
           }
         })
         .success(function (response) {
@@ -41,4 +41,6 @@ angular.module('ethershift')
           });
         });
     };
+
+    $scope.calculateBTCAmount();
   });
