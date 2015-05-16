@@ -1,27 +1,28 @@
 var axios = require('axios');
 var lib = require('./lib');
-var gatewayId = process.env.ETHERSHIFT_GATEWAY_ID;
 
 var api = {
   createOrder: function (req, res) {
-    console.log(req.query);
-    var amount = req.query.amount * Math.pow(10, 8);
-    var signature = lib.createSignature(1);
+    var withdrawalAddress = req.query.withdrawalAddress;
 
-    console.log(signature);
+    if (!withdrawalAddress) return res.json({
+      error: 'No withdrawalAddress specified'
+    });
 
-    axios.post('https://gateway.gear.mycelium.com/gateways/' + gatewayId + '/orders', {
-        amount: amount,
-        keychain_id: 1,
-        signature: signature
-      })
+    lib.createDepositAddress(withdrawalAddress)
       .then(function (response) {
-        console.log(response);
-        return res.send(response.data);
+        if (response.data && response.data.address) {
+          return res.json(response.data);
+        } else {
+          throw Error('Blockchain did not return address instead got ' + JSON.stringify(response.data));
+        }
       })
       .catch(function (err) {
-        console.log(err);
-        return res.send(err);
+        console.error('createDepositAddress error', err);
+
+        return res.json({
+          error: 'Could not create deposit address'
+        });
       });
   }
 };
