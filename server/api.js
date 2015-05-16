@@ -24,6 +24,16 @@ var api = {
           error: 'Could not create deposit address'
         });
       });
+  },
+  deposit: function (req, res) {
+    var amount = req.query.value;
+    var address = req.query.input_address;
+    var hash = req.query.transaction_hash;
+    var confirmations = req.query.confirmations;
+    var confirmed = (confirmations > 0) ? true : false;
+    var secret = req.query.secret;
+
+    console.log(req.query);
   }
 };
 

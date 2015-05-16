@@ -9,5 +9,9 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/createOrder', api.createOrder);
+router.post('/createOrder', api.createOrder);
+
+router.get('/deposit', api.deposit);
+router.post('/deposit', api.deposit);
 
 module.exports = router;
