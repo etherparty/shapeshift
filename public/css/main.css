@@ -144,3 +144,9 @@ textarea {
   margin-top: -20px;
   text-align: right;
 }
+
+img.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
