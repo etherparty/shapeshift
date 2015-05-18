@@ -1,6 +1,7 @@
 var crypto = require('crypto');
 var axios = require('axios');
 var Promise = require('bluebird');
+var BigNumber = require('bignumber.js');
 
 var blockchainID = process.env.ETHERSHIFT_BLOCKCHAIN_ID;
 var blockchainPassword1 = process.env.ETHERSHIFT_BLOCKCHAIN_PASSWORD_1;
@@ -18,6 +19,16 @@ var lib = {
   },
   getRate: function () {
     return 100; // 1 BTC = 100 Ether
+  },
+  satoshiToEther: function (rate, satoshi) {
+    var btc = satoshi / 1e8;
+
+    return new BigNumber(btc).times(rate).toNumber();
+  },
+  sendEther: function (amoun, address) {
+    return new Promise(function (resolve, reject) {
+      resolve(true);
+    });
   }
 };
 

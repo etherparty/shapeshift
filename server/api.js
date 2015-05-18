@@ -2,6 +2,7 @@ var axios = require('axios');
 var Promise = require('bluebird');
 var lib = require('./lib');
 var database = require('./database');
+var debug = require('debug')('api');
 
 var depositSecret = process.env.ETHERSHIFT_BLOCKCHAIN_SECRET;
 if (!depositSecret) throw new Error('must set ETHERSHIFT_BLOCKCHAIN_SECRET');
@@ -53,10 +54,38 @@ var api = {
     var confirmations = req.query.confirmations;
     var confirmed = (confirmations > 0) ? true : false;
 
-    console.log(req.query);
+    debug('deposit query: ' + JSON.stringify(req.query));
 
     if (confirmed) {
-      return res.ok('*ok*');
+      var order = null;
+
+      database.findOrderByDepositAddres(address)
+        .then(function (rows) {
+          order = rows[0];
+          var orderId = order.id;
+          debug('orderId: ' + orderId);
+
+          return database.saveDeposit(orderId, hash, amount);
+        })
+        .then(function (result) {
+          var amountEther = lib.satoshiToEther(order.rate, amount);
+
+          return lib.sendEther(amountEther, order.withdrawalAddress);
+        })
+        .then(function () {
+          return res.send('*ok*');
+        })
+        .catch(function (err) {
+          console.error('deposit error', err);
+
+          return res.json({
+            error: 'Could not save deposit'
+          });
+        });
+    } else {
+      return res.json({
+        error: 'Could not save deposit, waiting for 1 confirmation'
+      });
     }
   }
 };
